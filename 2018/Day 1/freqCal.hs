@@ -1,8 +1,18 @@
-import Data.Typeable
+import System.Environment
 
+main :: IO()
 main = do
-	contents <- readFile "frequencies.txt"
-	print (sumList (map strToInt(split contents)))
+	args <- getArgs
+	case args of
+		[] -> error "Supply a filename to open."
+		[arg] -> do handle arg
+		_ -> error "Too many arguments." 
+
+handle :: String -> IO()
+handle fn = do
+	contents <- readFile fn
+	let result = (sumList . map strToInt . split) contents 
+	print result
 
 split :: String -> [String]
 split [] = []
